@@ -1,0 +1,81 @@
+# =====================================================
+# Task 3: Data Analysis using Pandas
+# =====================================================
+
+import pandas as pd
+
+
+# -----------------------------------------------------
+# Step 1: Load Dataset
+# -----------------------------------------------------
+try:
+    df = pd.read_csv(r"C:\Users\Nandini\Desktop\Alfido\employees.csv")
+    print("✅ Dataset loaded successfully.\n")
+except FileNotFoundError:
+    print("❌ employees.csv file not found.")
+    exit()
+
+
+# -----------------------------------------------------
+# Step 2: Inspect Data
+# -----------------------------------------------------
+print("📊 First 5 Rows:")
+print(df.head(), "\n")
+
+print("📋 Dataset Information:")
+print(df.info(), "\n")
+
+print("📈 Statistical Summary:")
+print(df.describe(), "\n")
+
+
+# -----------------------------------------------------
+# Step 3: Clean Missing Data
+# -----------------------------------------------------
+
+# Fill missing Salary with average salary
+df["Salary"].fillna(df["Salary"].mean(), inplace=True)
+
+# Fill missing Age with median age
+df["Age"].fillna(df["Age"].median(), inplace=True)
+
+print("✅ Missing values handled.\n")
+
+
+# -----------------------------------------------------
+# Step 4: Filtering
+# -----------------------------------------------------
+
+# Employees with salary greater than 60000
+high_salary = df[df["Salary"] > 60000]
+
+print("💰 Employees with Salary > 60000:")
+print(high_salary, "\n")
+
+
+# -----------------------------------------------------
+# Step 5: Grouping and Aggregation
+# -----------------------------------------------------
+
+# Average salary per department
+avg_salary_dept = df.groupby("Department")["Salary"].mean()
+
+print("📊 Average Salary per Department:")
+print(avg_salary_dept, "\n")
+
+
+# -----------------------------------------------------
+# Step 6: Insights
+# -----------------------------------------------------
+
+highest_dept = avg_salary_dept.idxmax()
+highest_salary = avg_salary_dept.max()
+
+lowest_dept = avg_salary_dept.idxmin()
+lowest_salary = avg_salary_dept.min()
+
+print("🔎 INSIGHTS:")
+print(f"1. {highest_dept} department has the highest average salary ({highest_salary:.2f}).")
+print(f"2. {lowest_dept} department has the lowest average salary ({lowest_salary:.2f}).")
+print(f"3. There are {len(high_salary)} employees earning more than 60000.")
+print("4. Missing values in Salary and Age were handled using mean and median imputation.")
